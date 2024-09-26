@@ -13,7 +13,7 @@ type Configurator interface {
 type Config struct {
 	// Level: info, debug, warning, error, fatal, panic.
 	Level string `envconfig:"LOGGER_LEVEL"  default:"debug"`
-	// Output: /dev/null/, stdout, stderr (logs will store in the {projectRoot}/var/log dir.).
+	// Output: /dev/null/, stdout, stderr, filename (example: /var/log/app.log).
 	Output string `envconfig:"LOGGER_OUTPUT" default:"stdout"`
 	// Formatter: text, json.
 	Formatter string `envconfig:"LOGGER_FORMAT" default:"json"`

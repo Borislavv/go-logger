@@ -2,7 +2,7 @@
 
 ### ENVs: 
 1. **LOGGER_LEVEL** (values: info, debug, warning, error, fatal, panic)
-2. **LOGGER_OUTPUT** (values: /dev/null/, stdout, stderr)
+2. **LOGGER_OUTPUT** (values: /dev/null/, stdout, stderr, filename (example: /var/log/dev.log))
 3. **LOGGER_FORMAT** (values: text, json)
 4. **LOGGER_LOGS_DIR** (values: any dir from root project dir., for example: var/log)
 5. **LOGGER_CONTEXT_EXTRA_FIELD** (any values which will extracts from context.Context, for example: jobID, taskID)
