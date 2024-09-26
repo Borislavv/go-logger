@@ -33,7 +33,7 @@ func NewOutput(output string) (out *os.File, cancel CancelFunc, err error) {
 	}
 
 	if output == "" {
-		cfg.GetLoggerOutput()
+		output = cfg.GetLoggerOutput()
 	}
 
 	out, err = getOutput(output, cfg.GetLoggerLogsDir())
@@ -168,20 +168,17 @@ func getOutput(output, logsDir string) (*os.File, error) {
 		return os.Stdout, nil
 	} else if output == loggerenum.Stderr {
 		return os.Stderr, nil
+	} else if output == loggerenum.DevNull || output == "" {
+		return os.DevNull, nil
 	}
 
-	path := ""
-	if output == "" {
-		path = loggerenum.DevNull
-	} else {
-		rootDir, err := os.Getwd()
-		if err != nil {
-			return nil, err
-		}
-		path = filepath.Join(rootDir, logsDir)
+	rootDir, err := os.Getwd()
+	if err != nil {
+		return nil, err
 	}
+	path := filepath.Join(rootDir, logsDir)
 
-	if _, err := os.ReadDir(filepath.Dir(path)); err != nil {
+	if _, err = os.ReadDir(filepath.Dir(path)); err != nil {
 		if os.IsNotExist(err) {
 			if err = os.MkdirAll(filepath.Dir(path), 0755); err != nil {
 				return nil, err
