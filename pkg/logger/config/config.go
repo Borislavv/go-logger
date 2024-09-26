@@ -2,6 +2,14 @@ package loggerconfig
 
 import "github.com/kelseyhightower/envconfig"
 
+type Configurator interface {
+	GetLoggerLevel() string
+	GetLoggerOutput() string
+	GetLoggerFormatter() string
+	GetLoggerLogsDir() string
+	GetLoggerContextExtraFields() []string
+}
+
 type Config struct {
 	// Level: info, debug, warning, error, fatal, panic.
 	Level string `envconfig:"LOGGER_LEVEL"  default:"debug"`

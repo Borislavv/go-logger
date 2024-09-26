@@ -1,7 +1,8 @@
-package logger
+package logrus
 
 import (
 	"context"
+	"github.com/Borislavv/go-logger/pkg/logger"
 	loggerconfig "github.com/Borislavv/go-logger/pkg/logger/config"
 	loggerdto "github.com/Borislavv/go-logger/pkg/logger/dto"
 	loggerenum "github.com/Borislavv/go-logger/pkg/logger/enum"
@@ -24,7 +25,7 @@ type Logrus struct {
 // If the output is passed as empty string, then the output will be used from config.
 // NOTE: Must be called just once per unique output, or you will see the error while
 // closing an output that a file already closed. This happens due to two outputs refers to the same file pointer.
-func NewOutput(output string) (out *os.File, cancel CancelFunc, err error) {
+func NewOutput(output string) (out *os.File, cancel logger.CancelFunc, err error) {
 	if cfg == nil {
 		cfg, err = loggerconfig.Load()
 		if err != nil {
@@ -46,7 +47,7 @@ func NewOutput(output string) (out *os.File, cancel CancelFunc, err error) {
 }
 
 // NewLogrus creates a new Logrus logger instance for the given output.
-func NewLogrus(output Outputer) (logger *Logrus, cancel CancelFunc, err error) {
+func NewLogrus(output logger.Outputer) (logger *Logrus, cancel logger.CancelFunc, err error) {
 	if cfg == nil {
 		cfg, err = loggerconfig.Load()
 		if err != nil {
@@ -97,56 +98,56 @@ func (l *Logrus) handleMessages(wg *sync.WaitGroup) {
 	}
 }
 
-func (l *Logrus) DebugMsg(ctx context.Context, msg string, fields Fields) {
+func (l *Logrus) DebugMsg(ctx context.Context, msg string, fields logger.Fields) {
 	l.msgCh <- loggerdto.NewMsg(ctx, loggerenum.DebugLvl, msg, fields)
 }
 
-func (l *Logrus) InfoMsg(ctx context.Context, msg string, fields Fields) {
+func (l *Logrus) InfoMsg(ctx context.Context, msg string, fields logger.Fields) {
 	l.msgCh <- loggerdto.NewMsg(ctx, loggerenum.InfoLvl, msg, fields)
 }
 
-func (l *Logrus) WarningMsg(ctx context.Context, msg string, fields Fields) {
+func (l *Logrus) WarningMsg(ctx context.Context, msg string, fields logger.Fields) {
 	l.msgCh <- loggerdto.NewMsg(ctx, loggerenum.WarningLvl, msg, fields)
 }
 
-func (l *Logrus) ErrorMsg(ctx context.Context, msg string, fields Fields) {
+func (l *Logrus) ErrorMsg(ctx context.Context, msg string, fields logger.Fields) {
 	l.msgCh <- loggerdto.NewMsg(ctx, loggerenum.ErrorLvl, msg, fields)
 }
 
-func (l *Logrus) FatalMsg(ctx context.Context, msg string, fields Fields) {
+func (l *Logrus) FatalMsg(ctx context.Context, msg string, fields logger.Fields) {
 	l.msgCh <- loggerdto.NewMsg(ctx, loggerenum.FatalLvl, msg, fields)
 }
 
-func (l *Logrus) PanicMsg(ctx context.Context, msg string, fields Fields) {
+func (l *Logrus) PanicMsg(ctx context.Context, msg string, fields logger.Fields) {
 	l.msgCh <- loggerdto.NewMsg(ctx, loggerenum.PanicLvl, msg, fields)
 }
 
-func (l *Logrus) Debug(ctx context.Context, err error, fields Fields) error {
+func (l *Logrus) Debug(ctx context.Context, err error, fields logger.Fields) error {
 	l.errCh <- loggerdto.NewErr(ctx, loggerenum.DebugLvl, err, fields)
 	return err
 }
 
-func (l *Logrus) Info(ctx context.Context, err error, fields Fields) error {
+func (l *Logrus) Info(ctx context.Context, err error, fields logger.Fields) error {
 	l.errCh <- loggerdto.NewErr(ctx, loggerenum.InfoLvl, err, fields)
 	return err
 }
 
-func (l *Logrus) Warning(ctx context.Context, err error, fields Fields) error {
+func (l *Logrus) Warning(ctx context.Context, err error, fields logger.Fields) error {
 	l.errCh <- loggerdto.NewErr(ctx, loggerenum.WarningLvl, err, fields)
 	return err
 }
 
-func (l *Logrus) Error(ctx context.Context, err error, fields Fields) error {
+func (l *Logrus) Error(ctx context.Context, err error, fields logger.Fields) error {
 	l.errCh <- loggerdto.NewErr(ctx, loggerenum.ErrorLvl, err, fields)
 	return err
 }
 
-func (l *Logrus) Fatal(ctx context.Context, err error, fields Fields) error {
+func (l *Logrus) Fatal(ctx context.Context, err error, fields logger.Fields) error {
 	l.errCh <- loggerdto.NewErr(ctx, loggerenum.FatalLvl, err, fields)
 	return err
 }
 
-func (l *Logrus) Panic(ctx context.Context, err error, fields Fields) error {
+func (l *Logrus) Panic(ctx context.Context, err error, fields logger.Fields) error {
 	l.errCh <- loggerdto.NewErr(ctx, loggerenum.PanicLvl, err, fields)
 	return err
 }

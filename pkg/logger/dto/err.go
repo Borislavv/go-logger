@@ -2,7 +2,6 @@ package loggerdto
 
 import (
 	"context"
-	"github.com/Borislavv/go-logger/pkg/logger"
 	"github.com/sirupsen/logrus"
 	"runtime"
 	"strings"
@@ -10,7 +9,7 @@ import (
 
 type ErrDto struct {
 	Ctx    context.Context
-	Fields logger.Fields
+	Fields map[string]any
 	Err    error
 	Level  string
 	File   string
@@ -18,7 +17,7 @@ type ErrDto struct {
 	Line   int
 }
 
-func NewErr(ctx context.Context, level string, err error, fields logger.Fields) *ErrDto {
+func NewErr(ctx context.Context, level string, err error, fields map[string]any) *ErrDto {
 	var fn string
 	pc, file, line, ok := runtime.Caller(2)
 	if ok {

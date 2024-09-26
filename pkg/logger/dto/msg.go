@@ -2,7 +2,6 @@ package loggerdto
 
 import (
 	"context"
-	"github.com/Borislavv/go-logger/pkg/logger"
 	"github.com/sirupsen/logrus"
 	"runtime"
 	"strings"
@@ -10,7 +9,7 @@ import (
 
 type MsgDto struct {
 	Ctx    context.Context
-	Fields logger.Fields
+	Fields map[string]any
 	Level  string
 	Msg    string
 	File   string
@@ -18,7 +17,7 @@ type MsgDto struct {
 	Line   int
 }
 
-func NewMsg(ctx context.Context, level string, msg string, fields logger.Fields) *MsgDto {
+func NewMsg(ctx context.Context, level string, msg string, fields map[string]any) *MsgDto {
 	var fn string
 	pc, file, line, ok := runtime.Caller(2)
 	if ok {
