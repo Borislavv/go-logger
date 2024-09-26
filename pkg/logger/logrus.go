@@ -2,10 +2,12 @@ package logger
 
 import (
 	"context"
+	"encoding/json"
 	loggerconfig "github.com/Borislavv/go-logger/pkg/logger/config"
 	loggerdto "github.com/Borislavv/go-logger/pkg/logger/dto"
 	loggerenum "github.com/Borislavv/go-logger/pkg/logger/enum"
 	"github.com/sirupsen/logrus"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -224,4 +226,14 @@ func (l *Logrus) getFormat(formatter string) logrus.Formatter {
 	default:
 		return &logrus.JSONFormatter{}
 	}
+}
+
+func JsonRawLog(msg, level string, err error) {
+	func() {
+		b, e := json.Marshal(loggerdto.NewMsg(context.Background(), level, msg, Fields{"err": err.Error()}))
+		if e != nil {
+			return
+		}
+		log.Println(string(b))
+	}()
 }
