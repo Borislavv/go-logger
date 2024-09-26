@@ -169,7 +169,7 @@ func getOutput(output, logsDir string) (*os.File, error) {
 	} else if output == loggerenum.Stderr {
 		return os.Stderr, nil
 	} else if output == loggerenum.DevNull || output == "" {
-		return os.DevNull, nil
+		return os.OpenFile(os.DevNull, os.O_WRONLY, 0644)
 	}
 
 	rootDir, err := os.Getwd()
