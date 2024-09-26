@@ -8,6 +8,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"os"
 	"path/filepath"
+	"strings"
 	"sync"
 )
 
@@ -177,6 +178,10 @@ func getOutput(output, logsDir string) (*os.File, error) {
 		return nil, err
 	}
 	path := filepath.Join(rootDir, logsDir)
+
+	if !strings.Contains(".", path) {
+		path = filepath.Join(path, "app.log")
+	}
 
 	if _, err = os.ReadDir(filepath.Dir(path)); err != nil {
 		if os.IsNotExist(err) {
