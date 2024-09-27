@@ -229,11 +229,9 @@ func (l *Logrus) getFormat(formatter string) logrus.Formatter {
 }
 
 func JsonRawLog(msg, level string, err error) {
-	func() {
-		b, e := json.Marshal(loggerdto.NewMsg(context.Background(), level, msg, Fields{"err": err.Error()}))
-		if e != nil {
-			return
-		}
-		log.Println(string(b))
-	}()
+	b, e := json.Marshal(loggerdto.NewMsg(context.Background(), level, msg, Fields{"err": err.Error()}))
+	if e != nil {
+		return
+	}
+	log.Println(string(b))
 }
