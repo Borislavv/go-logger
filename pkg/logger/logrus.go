@@ -124,6 +124,10 @@ func (l *Logrus) PanicMsg(ctx context.Context, msg string, fields Fields) {
 	l.msgCh <- loggerdto.NewMsg(ctx, loggerenum.PanicLvl, msg, fields)
 }
 
+func (l *Logrus) LogMsg(ctx context.Context, msg, level string, fields Fields) {
+	l.msgCh <- loggerdto.NewMsg(ctx, level, msg, fields)
+}
+
 func (l *Logrus) Debug(ctx context.Context, err error, fields Fields) error {
 	l.errCh <- loggerdto.NewErr(ctx, loggerenum.DebugLvl, err, fields)
 	return err
@@ -152,6 +156,10 @@ func (l *Logrus) Fatal(ctx context.Context, err error, fields Fields) error {
 func (l *Logrus) Panic(ctx context.Context, err error, fields Fields) error {
 	l.errCh <- loggerdto.NewErr(ctx, loggerenum.PanicLvl, err, fields)
 	return err
+}
+
+func (l *Logrus) Log(ctx context.Context, err error, level string, fields Fields) {
+	l.errCh <- loggerdto.NewErr(ctx, level, err, fields)
 }
 
 func (l *Logrus) fieldsFromContext(ctx context.Context) logrus.Fields {

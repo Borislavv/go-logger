@@ -14,6 +14,7 @@ type Logger interface {
 	ErrorMsg(ctx context.Context, msg string, fields Fields)
 	FatalMsg(ctx context.Context, msg string, fields Fields)
 	PanicMsg(ctx context.Context, msg string, fields Fields)
+	LogMsg(ctx context.Context, msg, level string, fields Fields)
 
 	Debug(ctx context.Context, err error, fields Fields) error
 	Info(ctx context.Context, err error, fields Fields) error
@@ -21,6 +22,7 @@ type Logger interface {
 	Error(ctx context.Context, err error, fields Fields) error
 	Fatal(ctx context.Context, err error, fields Fields) error
 	Panic(ctx context.Context, err error, fields Fields) error
+	Log(ctx context.Context, err error, level string, fields Fields)
 }
 
 type CancelFunc = func()
