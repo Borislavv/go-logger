@@ -27,14 +27,7 @@ type Logrus struct {
 // If the output is passed as empty string, then the output will be used from config.
 // NOTE: Must be called just once per unique output, or you will see the error while
 // closing an output that a file already closed. This happens due to two outputs refers to the same file pointer.
-func NewOutput(output string) (out *os.File, cancel CancelFunc, err error) {
-	if cfg == nil {
-		cfg, err = loggerconfig.Load()
-		if err != nil {
-			return nil, nil, err
-		}
-	}
-
+func NewOutput(cfg loggerconfig.Configurator, output string) (out *os.File, cancel CancelFunc, err error) {
 	if output == "" {
 		output = cfg.GetLoggerOutput()
 	}
@@ -49,14 +42,7 @@ func NewOutput(output string) (out *os.File, cancel CancelFunc, err error) {
 }
 
 // NewLogrus creates a new Logrus logger instance for the given output.
-func NewLogrus(output Outputer) (logger *Logrus, cancel CancelFunc, err error) {
-	if cfg == nil {
-		cfg, err = loggerconfig.Load()
-		if err != nil {
-			return nil, nil, err
-		}
-	}
-
+func NewLogrus(cfg loggerconfig.Configurator, output Outputer) (logger *Logrus, cancel CancelFunc, err error) {
 	l := &Logrus{logger: logrus.New(), contextExtraFields: cfg.GetLoggerContextExtraFields()}
 
 	l.logger.SetLevel(l.getLevel(cfg.GetLoggerLevel()))

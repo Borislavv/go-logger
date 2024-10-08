@@ -1,7 +1,5 @@
 package loggerconfig
 
-import "github.com/kelseyhightower/envconfig"
-
 type Configurator interface {
 	GetLoggerLevel() string
 	GetLoggerOutput() string
@@ -24,30 +22,22 @@ type Config struct {
 	ContextExtraFields []string `envconfig:"LOGGER_CONTEXT_EXTRA_FIELD"`
 }
 
-func Load() (*Config, error) {
-	cfg := new(Config)
-	if err := envconfig.Process("", cfg); err != nil {
-		return nil, err
-	}
-	return cfg, nil
-}
-
-func (c *Config) GetLoggerLevel() string {
+func (c Config) GetLoggerLevel() string {
 	return c.Level
 }
 
-func (c *Config) GetLoggerOutput() string {
+func (c Config) GetLoggerOutput() string {
 	return c.Output
 }
 
-func (c *Config) GetLoggerFormatter() string {
+func (c Config) GetLoggerFormatter() string {
 	return c.Formatter
 }
 
-func (c *Config) GetLoggerLogsDir() string {
+func (c Config) GetLoggerLogsDir() string {
 	return c.LogsDir
 }
 
-func (c *Config) GetLoggerContextExtraFields() []string {
+func (c Config) GetLoggerContextExtraFields() []string {
 	return c.ContextExtraFields
 }
