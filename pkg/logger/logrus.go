@@ -14,7 +14,7 @@ import (
 	"sync"
 )
 
-var cfg *loggerconfig.Config
+var _ Logger = (*Logrus)(nil)
 
 type Logrus struct {
 	logger             *logrus.Logger

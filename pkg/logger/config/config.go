@@ -1,12 +1,6 @@
 package loggerconfig
 
-type Configurator interface {
-	GetLoggerLevel() string
-	GetLoggerOutput() string
-	GetLoggerFormatter() string
-	GetLoggerLogsDir() string
-	GetLoggerContextExtraFields() []string
-}
+var _ Configurator = (*Config)(nil)
 
 type Config struct {
 	// Level: info, debug, warning, error, fatal, panic.
