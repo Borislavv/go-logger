@@ -8,14 +8,18 @@
 5. **LOGGER_CONTEXT_EXTRA_FIELD** (any values which will extracts from context.Context, for example: jobID, taskID)
 
 ### Usage:
+    cfg, err := loggerconfig.Load()
+    if err != nil {
+    	panic(err)
+    }
 
-    output, cancelOutput, err := logger.NewOutput()
+    output, cancelOutput, err := logger.NewOutput(cfg)
     if err != nil {
         panic(err)
     }
     defer cancelOutput()
 
-	lgr, lgrCancel, err := logger.NewLogrus(output)
+	lgr, lgrCancel, err := logger.NewLogrus(cfg, output)
 	if err != nil {
 		panic(err)
 	}
