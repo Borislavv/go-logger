@@ -27,12 +27,8 @@ type Logrus struct {
 // If the output is passed as empty string, then the output will be used from config.
 // NOTE: Must be called just once per unique output, or you will see the error while
 // closing an output that a file already closed. This happens due to two outputs refers to the same file pointer.
-func NewOutput(cfg loggerconfig.Configurator, output string) (out *os.File, cancel CancelFunc, err error) {
-	if output == "" {
-		output = cfg.GetLoggerOutput()
-	}
-
-	out, err = getOutput(output, cfg.GetLoggerLogsDir())
+func NewOutput(cfg loggerconfig.Configurator) (out *os.File, cancel CancelFunc, err error) {
+	out, err = getOutput(cfg.GetLoggerOutput(), cfg.GetLoggerLogsDir())
 	if err != nil {
 		return nil, nil, err
 	}
